@@ -7,6 +7,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import pandas as pd
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 import time
 
 # Initialize session state variables
@@ -116,8 +118,14 @@ with st.sidebar:
             else:
                 options = webdriver.ChromeOptions()
                 options.add_argument('--headless')
-                st.session_state.driver = webdriver.Chrome(
-                    service=Service(ChromeDriverManager().install()), options=options
+                # Set up headless Chromium browser
+                chrome_options = Options()
+                chrome_options.add_argument("--headless")  # Run in headless mode
+                chrome_options.add_argument("--no-sandbox")  # Required for running on Render
+                chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent memory issues
+                chrome_options.binary_location = "/usr/bin/chromium-browser"  # Path to Chromium
+
+                st.session_state.driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=chrome_options)
                 )
                 wait = WebDriverWait(st.session_state.driver, 20)
 
