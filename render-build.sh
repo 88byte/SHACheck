@@ -1,18 +1,21 @@
 #!/bin/bash
-set -e
 
-# Create directory for Chromium
-mkdir -p /opt/render/project/.chromium
+# Install Chromium manually
+echo "Installing Chromium..."
+mkdir -p /opt/render/.local/chrome
+wget -qO- https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb > /opt/render/.local/chrome/chrome.deb
+dpkg -x /opt/render/.local/chrome/chrome.deb /opt/render/.local/chrome/
+mv /opt/render/.local/chrome/opt/google/chrome/* /opt/render/.local/chrome/
 
-# Download prebuilt Chromium & Chromedriver (Render-compatible)
-echo "Downloading Chromium..."
-wget -q "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb" -O /opt/render/project/.chromium/chrome.deb
-dpkg -x /opt/render/project/.chromium/chrome.deb /opt/render/project/.chromium/
+# Install Chromedriver
+echo "Installing Chromedriver..."
+mkdir -p /opt/render/.local/chromedriver
+wget -qO- https://chromedriver.storage.googleapis.com/$(curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip > /opt/render/.local/chromedriver/chromedriver.zip
+unzip /opt/render/.local/chromedriver/chromedriver.zip -d /opt/render/.local/chromedriver/
 
-echo "Downloading Chromedriver..."
-wget -q "https://chromedriver.storage.googleapis.com/114.0.5735.90/chromedriver_linux64.zip" -O /opt/render/project/.chromium/chromedriver.zip
-unzip /opt/render/project/.chromium/chromedriver.zip -d /opt/render/project/.chromium/
-chmod +x /opt/render/project/.chromium/chromedriver
+# Make executable
+chmod +x /opt/render/.local/chrome/chrome
+chmod +x /opt/render/.local/chromedriver/chromedriver
 
-# Install dependencies
-pip install -r requirements.txt
+echo "Chromium and Chromedriver installation complete!"
+
