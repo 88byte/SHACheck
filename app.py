@@ -7,9 +7,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import pandas as pd
-from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 import time
+import os
+
 
 # Initialize session state variables
 if "driver" not in st.session_state:
@@ -123,10 +124,13 @@ with st.sidebar:
                 chrome_options.add_argument("--headless")  # Run in headless mode
                 chrome_options.add_argument("--no-sandbox")  # Required for running on Render
                 chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent memory issues
-                chrome_options.binary_location = "/usr/bin/chromium-browser"  # Path to Chromium
+                # Define Chromium & Chromedriver Paths (Use Local Binaries)
+                chrome_options.binary_location = "/opt/render/project/.chromium/chrome"
+                chromedriver_path = "/opt/render/project/.chromium/chromedriver"
 
-                st.session_state.driver = webdriver.Chrome(service=Service("/usr/bin/chromedriver"), options=chrome_options)
-                )
+                # Launch Selenium with custom paths
+                st.session_state.driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+                
                 wait = WebDriverWait(st.session_state.driver, 20)
 
                 st.session_state.driver.get("https://provider.partnershiphp.org/UI/Login.aspx")
@@ -193,10 +197,19 @@ if update_button:
     else:
         # **Launch Selenium for CounselEar**
         options = webdriver.ChromeOptions()
-        options.add_argument("--headless")  # Run in headless mode
-        st.session_state.counselear_driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()), options=options
-        )
+                options.add_argument('--headless')
+                # Set up headless Chromium browser
+                chrome_options = Options()
+                chrome_options.add_argument("--headless")  # Run in headless mode
+                chrome_options.add_argument("--no-sandbox")  # Required for running on Render
+                chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent memory issues
+                # Define Chromium & Chromedriver Paths (Use Local Binaries)
+                chrome_options.binary_location = "/opt/render/project/.chromium/chrome"
+                chromedriver_path = "/opt/render/project/.chromium/chromedriver"
+
+                # Launch Selenium with custom paths
+                st.session_state.driver = webdriver.Chrome(service=Service(chromedriver_path), options=chrome_options)
+        
         wait = WebDriverWait(st.session_state.counselear_driver, 20)
 
         # **Login to CounselEar**
