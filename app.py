@@ -129,6 +129,10 @@ with st.sidebar:
                 chrome_options.add_argument("--no-sandbox")  # Required for Render
                 chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent memory issues
 
+                # Manually set correct paths
+                chrome_options.binary_location = "/opt/render/.local/chrome/chrome"
+                chromedriver_path = "/opt/render/.local/chromedriver/chromedriver"
+
                 # Launch Selenium (NO manual paths needed!)
                 st.session_state.driver = webdriver.Chrome(options=chrome_options)
 
@@ -206,6 +210,10 @@ if update_button:
         chrome_options.add_argument("--headless")  # Headless mode (no GUI)
         chrome_options.add_argument("--no-sandbox")  # Required for Render
         chrome_options.add_argument("--disable-dev-shm-usage")  # Prevent memory issues
+
+        # Manually set correct paths
+        chrome_options.binary_location = "/opt/render/.local/chrome/chrome"
+        chromedriver_path = "/opt/render/.local/chromedriver/chromedriver"
 
         # Launch Selenium (NO manual paths needed!)
         st.session_state.driver = webdriver.Chrome(options=chrome_options)
