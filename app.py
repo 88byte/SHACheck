@@ -171,8 +171,8 @@ st.markdown("""
 
 # 🏥 **Login Credentials Section**
 with st.expander("🔐 CounselEar Login"):
-    st.session_state.counsel_username = st.text_input("Username", value=st.session_state.counsel_username)
-    st.session_state.counsel_password = st.text_input("Password", type="password", value=st.session_state.counsel_password)
+    st.session_state.counsel_username = st.text_input("Username", value=st.session_state.counsel_username, key="counsel_username_input")
+    st.session_state.counsel_password = st.text_input("Password", type="password", value=st.session_state.counsel_password, key="counsel_password_input")
 
 # 🎯 **Update Button**
 update_button = st.button("🔄 Start CounselEar Update")
